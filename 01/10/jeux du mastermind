@@ -1,8 +1,30 @@
+import os
 import random
 
 COULEURS = "RVBJON"   # Rouge, Vert, Bleu, Jaune, Orange, Noir
 LONGUEUR = 4
 ESSAIS_MAX = 10
+
+# Codes ANSI pour afficher chaque lettre dans sa couleur
+CODES_ANSI = {
+    "R": "\033[1;31m",        # Rouge
+    "V": "\033[1;32m",        # Vert
+    "B": "\033[1;34m",        # Bleu
+    "J": "\033[1;93m",        # Jaune
+    "O": "\033[1;38;5;208m",  # Orange
+    "N": "\033[1;30;47m",     # Noir (sur fond blanc pour rester visible)
+}
+RESET = "\033[0m"
+
+os.system("")   # active les couleurs dans le terminal Windows
+
+
+def colorer(lettre):
+    return CODES_ANSI[lettre] + lettre + RESET
+
+
+def colorer_code(code):
+    return " ".join(colorer(c) for c in code)
 
 
 def generer_code():
@@ -18,7 +40,7 @@ def demander_proposition():
         if len(prop) != LONGUEUR:
             print("Il faut exactement", LONGUEUR, "couleurs.")
         elif any(c not in COULEURS for c in prop):
-            print("Couleurs autorisées :", " ".join(COULEURS))
+            print("Couleurs autorisées :", colorer_code(COULEURS))
         else:
             return prop
 
@@ -47,7 +69,8 @@ def main():
     print("Bienvenue", nom, "!")
     print()
     print("Devinez le code secret de", LONGUEUR, "couleurs.")
-    print("Couleurs : R=Rouge V=Vert B=Bleu J=Jaune O=Orange N=Noir")
+    print("Couleurs :", colorer("R") + "=Rouge", colorer("V") + "=Vert", colorer("B") + "=Bleu",
+          colorer("J") + "=Jaune", colorer("O") + "=Orange", colorer("N") + "=Noir")
     print("Une couleur peut apparaître plusieurs fois.")
     print("Vous avez", ESSAIS_MAX, "essais.")
     print()
@@ -62,13 +85,13 @@ def main():
             if historique:
                 print("--- Vos saisies précédentes ---")
                 for i, (p, b, m) in enumerate(historique, 1):
-                    print(" ", i, ":", " ".join(p), "  Bien placés :", b, "  Mal placés :", m)
+                    print(" ", i, ":", colorer_code(p), "  Bien placés :", b, "  Mal placés :", m)
                 print("-------------------------------")
             print("Essai", essai, "/", ESSAIS_MAX)
             prop = demander_proposition()
             bien, mal = evaluer(code, prop)
             historique.append((prop, bien, mal))
-            print("  Bien placés :", bien, "  Mal placés :", mal)
+            print(" ", colorer_code(prop), "  Bien placés :", bien, "  Mal placés :", mal)
             if bien == LONGUEUR:
                 gagne = True
             else:
@@ -77,7 +100,7 @@ def main():
         if gagne:
             print("Bravo", nom, "! Vous avez trouvé le code en", essai, "essai(s) !")
         else:
-            print("Perdu", nom, "! Le code était :", code)
+            print("Perdu", nom, "! Le code était :", colorer_code(code))
 
         rejouer = input("Rejouer ? (O/N) : ").upper()
         print()
