@@ -1,0 +1,12 @@
+import math
+
+def main():
+    a = float(input("Entrez a : "))
+    b = float(input("Entrez b : "))
+    arith = (a + b) / 2
+    geom = math.sqrt(a * b)
+    print("Moyenne arithmétique :", arith)
+    print("Moyenne géométrique :", geom)
+    print("Différence :", arith - geom)
+
+main()

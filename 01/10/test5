@@ -1,0 +1,17 @@
+def main():
+    S = int(input("Entrez une somme entre 0 et 99 centimes : "))
+    p50 = S // 50
+    S = S % 50
+    p20 = S // 20
+    S = S % 20
+    p10 = S // 10
+    S = S % 10
+    p5 = S // 5
+    S = S % 5
+    p2 = S // 2
+    S = S % 2
+    p1 = S
+    print("50c :", p50, " 20c :", p20, " 10c :", p10, " 5c :", p5, " 2c :", p2, " 1c :", p1)
+    print("Nombre minimal de pièces :", p50 + p20 + p10 + p5 + p2 + p1)
+
+main()

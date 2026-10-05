@@ -1,0 +1,87 @@
+import random
+
+COULEURS = "RVBJON"   # Rouge, Vert, Bleu, Jaune, Orange, Noir
+LONGUEUR = 4
+ESSAIS_MAX = 10
+
+
+def generer_code():
+    code = ""
+    for i in range(LONGUEUR):
+        code = code + random.choice(COULEURS)
+    return code
+
+
+def demander_proposition():
+    while True:
+        prop = input("Votre proposition : ").upper().replace(" ", "")
+        if len(prop) != LONGUEUR:
+            print("Il faut exactement", LONGUEUR, "couleurs.")
+        elif any(c not in COULEURS for c in prop):
+            print("Couleurs autorisées :", " ".join(COULEURS))
+        else:
+            return prop
+
+
+def evaluer(code, prop):
+    # Bien placés : même couleur à la même position
+    bien_places = 0
+    for i in range(LONGUEUR):
+        if prop[i] == code[i]:
+            bien_places = bien_places + 1
+
+    # Couleurs communes (peu importe la position)
+    communes = 0
+    for c in COULEURS:
+        communes = communes + min(code.count(c), prop.count(c))
+
+    mal_places = communes - bien_places
+    return bien_places, mal_places
+
+
+def main():
+    print("==========================")
+    print("        BenjiMind         ")
+    print("==========================")
+    nom = input("Entrez votre nom : ")
+    print("Bienvenue", nom, "!")
+    print()
+    print("Devinez le code secret de", LONGUEUR, "couleurs.")
+    print("Couleurs : R=Rouge V=Vert B=Bleu J=Jaune O=Orange N=Noir")
+    print("Une couleur peut apparaître plusieurs fois.")
+    print("Vous avez", ESSAIS_MAX, "essais.")
+    print()
+
+    rejouer = "O"
+    while rejouer == "O":
+        code = generer_code()
+        gagne = False
+        essai = 1
+        historique = []
+        while essai <= ESSAIS_MAX and not gagne:
+            if historique:
+                print("--- Vos saisies précédentes ---")
+                for i, (p, b, m) in enumerate(historique, 1):
+                    print(" ", i, ":", " ".join(p), "  Bien placés :", b, "  Mal placés :", m)
+                print("-------------------------------")
+            print("Essai", essai, "/", ESSAIS_MAX)
+            prop = demander_proposition()
+            bien, mal = evaluer(code, prop)
+            historique.append((prop, bien, mal))
+            print("  Bien placés :", bien, "  Mal placés :", mal)
+            if bien == LONGUEUR:
+                gagne = True
+            else:
+                essai = essai + 1
+
+        if gagne:
+            print("Bravo", nom, "! Vous avez trouvé le code en", essai, "essai(s) !")
+        else:
+            print("Perdu", nom, "! Le code était :", code)
+
+        rejouer = input("Rejouer ? (O/N) : ").upper()
+        print()
+
+    print("Merci d'avoir joué à BenjiMind, au revoir", nom, "!")
+
+main()

@@ -1,0 +1,11 @@
+def main():
+    a = int(input("Entrez la valeur de a : "))
+    b = int(input("Entrez la valeur de b : "))
+    c = int(input("Entrez la valeur de c : "))
+    a, b, c = c, a, b
+    print("a=", a, " b=", b, " c=", c)
+    print("Somme :", a + b + c)
+    print("Produit :", a * b * c)
+
+main()
+

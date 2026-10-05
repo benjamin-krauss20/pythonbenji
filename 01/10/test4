@@ -1,0 +1,7 @@
+def main():
+    M = float(input("Entrez la charge maximale M (kg) : "))
+    k = float(input("Entrez le poids d'un carton k (kg) : "))
+    nb = int(M // k)
+    print("Nombre de cartons :", nb)
+
+main()
