@@ -82,6 +82,6 @@ def main():
         rejouer = input("Rejouer ? (O/N) : ").upper()
         print()
 
-    print("Merci d'avoir joué à BenjiMind, au revoir", nom, "!")
+    print("Merci d'avoir joué à BenjiMind, au revoir :)", nom, "!")
 
 main()
